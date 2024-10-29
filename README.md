@@ -26,18 +26,12 @@
     As part of the data preparation process, the conversations are extracted, and the text is cleaned and organized for the model’s input. Images are preprocessed to a standard format for easier use in neural network models.
 
 ## Step 2: Pre-training(Projection Model)  
-### S30_pretraining.ipynb :
+### 02_pretraining.ipynb :
 -   In this notebook pretraining models using PyTorch and Hugging Face's transformers library. Phi-2 model is used  process text input.The image inputs are coverted into embeddings which Phi-2 can understand using projection layer which generates projection model. Images are processed using  CLIP as base model (openai/clip-vit-base-patch32) to generate embeddings.In order to train project model, the data is passed through the projection layer. Clip model and Phi-2 models are frozen and projection model is only trained. These image embeddings are passed through a projection layer though ResBlock projection model, Resblock model ised to capture the context of the image.
-
-
-    -   Teacher Forcing with Simulated Annealing:
-    The notebook implements a teacher forcing simulated annealing scheduler. This method is used to gradually adjust the teacher forcing ratio over the training process:
-    -   Teacher Forcing: This is a training technique where the model uses the ground truth output (instead of its own prediction) as input for the next time step.
-    Simulated Annealing: The ratio of teacher forcing is scheduled to increase/decrease cyclically over iterations. This gradual change helps balance learning stability and the model’s ability to generalize.
-
     -   Model Setup:
     Models: The notebook defines models such as phi-2 (microsoft/phi-2) and OpenAI’s CLIP (clip-vit-base-patch32). These are pretrained models, which combine vision and language understanding.
-    The image inputs are coverted into embeddings which Phi-2 can understand using projection layer which generates projection model. Images are processed using  CLIP as base model (openai/clip-vit-base-patch32) to generate embeddings.In order to train project model, the data is passed through the projection layer. Clip model and Phi-2 models are frozen and projection model is only trained. These image embeddings are passed through a projection layer though ResBlock projection model, Resblock model ised to capture the context of the image.
+    The image inputs are coverted into embeddings which Phi-2 can understand using projection layer which generates projection model. Images are processed using  CLIP as base model (openai/clip-vit-base-patch32) to generate embeddings.
+    In order to train project model, the data is passed through the projection layer. Clip model and Phi-2 models are frozen and projection model is only trained. These image embeddings are passed through a projection layer though ResBlock projection model, Resblock model is used to capture the context of the image.
 
     ```python
     class SimpleResBlock(nn.Module):
@@ -74,14 +68,13 @@
     Refer S30--pretrain_output.log
 
 
-### Stage 2: Fine-training S29_finetunning.ipynb :
-
+### Stage 2: Fine-training 
+### 03_finetunning.ipynb :
 
 -   The notebook contains training a multi-modal model, likely for a  Visual QA, where both images and questions are input to the model, and the model generates a relevant answer. This involves the combination of pre-trained models (CLIP for image understanding and phi-2 for text understanding), fine-tuning them on a specific dataset, and tracking the model's performance using tools like Weights & Biases.
 
 -   Llava Instruct 150 k dataset is used to fine tune LLM model by understaning the dialouges from image and model. QLora techinque is used for fine tunning and genates adapters(model parameters and weights).The training iniitiated  with starting loss of 6.6 which subsequently decreased to 3.4 over 3 epochs and  100000 steps per epoch.
 
-- Detailed:
 -   CLIP Model: A model developed by OpenAI that allows images and text to be encoded into a shared embedding space, enabling cross-modal tasks like image captioning or visual question answering (VQA).
 -   Parameter-Efficient Fine-Tuning (PEFT): A technique to fine-tune large models by only updating a small subset of parameters, making the process faster and more memory efficient.
 -   Multi-Modal Model: Combines different types of data (text and images in this case) to make predictions or generate outputs.
