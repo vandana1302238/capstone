@@ -13,6 +13,7 @@
 -   Each entry has a unique identifier (id), an image file (image), and a conversation history (conversations). 
 -   These conversations simulate interactions between a human and an AI model, often asking questions about the content of the images.
 
+# Procedure
 ## Step 1:Data-Processing   
 ### 01_preprocessing_dataset.ipynb:
 - This notebook executes preprocessing the LLaVA dataset, for multimodal task. We focus on combining text and visual data as input
@@ -85,12 +86,13 @@
     -   Loss strats from 6.6 and declines to 3.4(at the 67% of epoch 3)
 
 
-### Huggingface Gradio App:
+# Huggingface Gradio App:
+
 -    The app.py script is a multimodal AI application that integrates image, audio, and text inputs using pre-trained models like CLIP (for vision tasks), Phi-2 (for text generation), and WhisperX (for audio transcription). The script sets up tokenizers and processors for handling inputs and defines a custom residual block (SimpleResBlock) to transform embeddings for more stable learning. 
   
 -    After loading pretrained and fine-tuned weights for both the projection and residual layers, it implements the model_generate_ans function, which processes inputs from different modalities, combines their embeddings, and generates responses sequentially.
--     This model handles tasks like image embedding extraction, audio transcription and embedding, and text tokenization to predict responses. 
--     The app features a Gradio interface where users can upload images, record or upload audio, and submit text queries, receiving multimodal answers through a web interface. 
+-    This model handles tasks like image embedding extraction, audio transcription and embedding, and text tokenization to predict responses. 
+-    The app features a Gradio interface where users can upload images, record or upload audio, and submit text queries, receiving multimodal answers through a web interface. 
 
 https://huggingface.co/spaces/Vvaann/Capstone
 
