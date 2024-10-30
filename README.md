@@ -1,7 +1,7 @@
 # Assignment 30 -Capstone - Multimodal Training
 
 # Objective
--  To Create multimodal LLM which takes Text, Image and Audio and generates output as text
+-  An attempt to understand, reate multimodal LLM which takes Text, Image and Audio and generates output as text
 
 # Description
 -   Phi-2 model is used as foundation model for training the multimodel llm. 
@@ -34,20 +34,6 @@
     The image inputs are coverted into embeddings which Phi-2 can understand using projection layer which generates projection model. Images are processed using  CLIP as base model (openai/clip-vit-base-patch32) to generate embeddings.
     In order to train project model, the data is passed through the projection layer. Clip model and Phi-2 models are frozen and projection model is only trained. These image embeddings are passed through a projection layer though ResBlock projection model, Resblock model is used to capture the context of the image.
 
-    ```python
-    class SimpleResBlock(nn.Module):
-        def __init__(self, phi_embed):
-            super().__init__()
-            self.pre_norm = nn.LayerNorm(phi_embed)
-            self.proj = nn.Sequential(
-                nn.Linear(phi_embed, phi_embed),
-                nn.GELU(),
-                nn.Linear(phi_embed, phi_embed)
-            )
-        def forward(self, x):
-            x = self.pre_norm(x)
-            return x + self.proj(x)
-    ```
     -   The projection model output is augmented with an "end of image" token (IMAGE_TOKEN_ID = 23893) and passed to the Phi-2 model's forward method.The model is trained and captions are generated for all images. The loss is calulated by referring the ground truth captions and the predicted captions.
 
     -   Random Split and Data Handling: The notebook makes use of PyTorch’s DataLoader for managing data pipelines and includes dataset splitting logic (random_split), potentially indicating training-validation splitting.
@@ -61,12 +47,8 @@
 -   Reference : [LLAVA Paper](https://arxiv.org/pdf/2304.08485.pdf)
 
 -   Resources: 
-    -   GPU Used: NVIDIA-A100 40GB GPU (Dedicated). 
-    -   Training duration 5.5 hours with 2 epochs  and iteration 20000 per epoch 
-    -   Loss strats from 7.2 and declines to 5.6
-
--   Training Logs:
-    Refer S30--pretrain_output.log
+    -   GPU Used: NVIDIA-A100 10GB GPU (Dedicated). 
+    -   Training duration 6.5 hours with 2 epochs  and iteration 20000 per epoch 
 
 
 ### Stage 2: Fine-training 
@@ -81,9 +63,8 @@
 -   Multi-Modal Model: Combines different types of data (text and images in this case) to make predictions or generate outputs.
 
 -   Resources: 
-    -   GPU Used: NVIDIA-A100 40GB GPU (Dedicated). 
-    -   Training duration 12 hours with epoch 3 and iteration 100000 per epoch 
-    -   Loss strats from 6.6 and declines to 3.4(at the 67% of epoch 3)
+    -   GPU Used: NVIDIA-A100 10GB GPU (Dedicated). 
+    -   Training duration 18 hours with epoch 3 and iteration 100000 per epoch 
 
 
 # Huggingface Gradio App:
